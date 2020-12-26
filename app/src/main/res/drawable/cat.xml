@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <animation-list android:id="@+id/cat_animation" android:oneshot="false">
+
+    <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/cat_animation" android:oneshot="false">
     <item android:drawable="@drawable/cat_0" android:duration="50" />
     <item android:drawable="@drawable/cat_1" android:duration="50" />
     <item android:drawable="@drawable/cat_2" android:duration="50" />
@@ -177,4 +178,3 @@
     <item android:drawable="@drawable/cat_173" android:duration="50" />
     <item android:drawable="@drawable/cat_174" android:duration="50" />
     </animation-list>
-</selector>
