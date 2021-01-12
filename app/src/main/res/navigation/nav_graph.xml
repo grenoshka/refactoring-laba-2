@@ -39,5 +39,13 @@
     <fragment
         android:id="@+id/map"
         android:name="com.example.laba4.map.MapFragment"
-        android:label="Map" />
+        android:label="Map" >
+        <action
+            android:id="@+id/action_map_to_gameActivity"
+            app:destination="@id/gameActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/gameActivity"
+        android:name="com.example.laba4.game.GameActivity"
+        android:label="GameActivity" />
 </navigation>
