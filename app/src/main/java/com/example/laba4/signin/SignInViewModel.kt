@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.databinding.BaseObservable
 
 
-class SignInViewModel(val signInView:SignInView) {
+class SignInViewModel(val signInView: SignInView) {
+
     val signInRequest = SignInRequest("","")
 
     fun signIn(){

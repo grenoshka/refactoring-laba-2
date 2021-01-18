@@ -30,7 +30,7 @@ class SignInFragment : Fragment(), SignInView {
         _binding = DataBindingUtil.inflate(inflater,R.layout.activity_sign_in, container,false)
         binding.signInViewModel = signInViewModel
 
-        val imageView: ImageView = binding.root.сatAnimation
+        val imageView: ImageView = binding.root.сatBackgroundImageView
         imageView.setBackgroundResource(R.drawable.cat)
         val mAnimationDrawable = imageView.background as AnimationDrawable
         mAnimationDrawable.start()

@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpActivity"
-        android:name="com.example.laba4.singup.SignUpFragment"
+        android:name="com.example.laba4.signup.SignUpFragment"
         android:label="activity_sign_up"
         tools:layout="@layout/activity_sign_up" >
         <action
