@@ -9,46 +9,56 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.laba4.R
-import com.example.laba4.databinding.ActivitySignInBinding
-import kotlinx.android.synthetic.main.activity_sign_in.view.*
-import kotlin.contracts.contract
+import com.example.laba4.databinding.FragmentSignInBinding
+import kotlinx.android.synthetic.main.fragment_sign_in.view.*
 
 
-class SignInFragment : Fragment(), SignInView {
+class SignInFragment : Fragment() {
 
-    private var _binding:ActivitySignInBinding? = null
+    private lateinit var navController:NavController
+
+    private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
+    private lateinit var signInViewModel:SignInViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val signInViewModel = SignInViewModel(this)
-        _binding = DataBindingUtil.inflate(inflater,R.layout.activity_sign_in, container,false)
-        binding.signInViewModel = signInViewModel
+        navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
+        _binding = DataBindingUtil.inflate(inflater,R.layout.fragment_sign_in, container,false)
+        signInViewModel = SignInViewModel(requireContext())
 
-        val imageView: ImageView = binding.root.сatBackgroundImageView
-        imageView.setBackgroundResource(R.drawable.cat)
-        val mAnimationDrawable = imageView.background as AnimationDrawable
-        mAnimationDrawable.start()
+        setUpBackground()
 
         return binding.root
     }
 
-    override fun onSignInSuccess(email: String, password: String) {
-        val navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
-        navController.navigate(R.id.menuActivity)
+    private fun setUpBackground(){
+        val imageView: ImageView = binding.root.сatBackgroundImageView
+        imageView.setBackgroundResource(R.drawable.cat)
+        val mAnimationDrawable = imageView.background as AnimationDrawable
+        mAnimationDrawable.start()
     }
 
-    override fun goToSignUp() {
-        val navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
-        navController.navigate(R.id.signUpActivity)
-    }
-
-    override fun onSignInError(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.signInViewModel = signInViewModel
+        binding.lifecycleOwner = this
+        signInViewModel.isUserSignedIn.observe(this, Observer {
+            if (it){
+                navController.navigate(R.id.menuActivity)
+            }
+        })
+        signInViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        })
+        binding.buttonGoToSignUp.setOnClickListener {
+            navController.navigate(R.id.signUpActivity)
+        }
     }
 }

@@ -54,6 +54,7 @@
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="@string/name"
+        android:text="@={signUpViewModel.name}"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView"
         app:layout_constraintHorizontal_bias="0.493"
@@ -67,6 +68,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="@string/email"
+        android:text="@={signUpViewModel.email}"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView"
         app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView"
@@ -79,6 +81,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="@string/password"
+        android:text="@={signUpViewModel.password}"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView"
         app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView"
@@ -91,24 +94,26 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="@string/repeatPassword"
+        android:text="@={signUpViewModel.repeatPassword}"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView"
         app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_shape"
         android:text="@string/sign_up"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        android:onClick="@{()->signUpViewModel.signUp()}"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGoToSignIn"
         app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView"
         app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonGoToSignIn"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

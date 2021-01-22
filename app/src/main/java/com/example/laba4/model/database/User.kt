@@ -1,4 +1,4 @@
-package com.example.laba4.database
+package com.example.laba4.model.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,6 +1,5 @@
-package com.example.laba4.database
+package com.example.laba4.model.database
 
-import android.provider.ContactsContract
 import androidx.room.*
 
 @Dao

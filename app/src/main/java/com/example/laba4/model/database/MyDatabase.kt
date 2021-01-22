@@ -1,7 +1,6 @@
-package com.example.laba4.database
+package com.example.laba4.model.database
 
 import android.content.Context
-import android.provider.ContactsContract
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase

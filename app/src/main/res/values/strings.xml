@@ -7,5 +7,31 @@
     <string name="password">Password</string>
     <string name="repeatPassword">Repeat password</string>
     <string name="have_account">Already have an account?</string>
-    <string name="have_not_account">Dont have an account yet?</string>
+    <string name="have_not_account">Don\'t have an account yet?</string>
+    <string name="map">Map</string>
+    <string name="play">Play</string>
+    <string name="user_profile">Profile</string>
+    <string name="points">Points</string>
+    <string name="leaderboard_position">Position in<br/>Leaderboard</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="level1">Level 1</string>
+    <string name="level2">Level 2</string>
+    <string name="level3">Level 3</string>
+    <string name="leaders">Leaders</string>
+    <string name="position">Pos</string>
+
+    <!--    shared preferences-->
+    <string name="preference_file_key">sharedPrefSmartName</string>
+    <string name="tokenKey">tokenSmartName</string>
+    <string name="defaultToken">no token</string>
+
+
+    <!--     errors          -->
+    <string name="error_incorrect_name">Error: incorrect name</string>
+    <string name="error_no_user_found">Error: no such user</string>
+    <string name="error_incorrect_email">Error: incorrect email</string>
+    <string name="error_incorrect_password">Error: incorrect password. Should be at least 2 characters long</string>
+    <string name="error_password_not_repeated">Please repeat your password</string>
+    <string name="error_passwords_dont_match">Error: passwords don\'t match</string>
+
 </resources>

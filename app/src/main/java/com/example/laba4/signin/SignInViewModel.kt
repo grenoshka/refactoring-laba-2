@@ -1,60 +1,74 @@
 package com.example.laba4.signin
 
-import android.text.Editable
-import android.text.TextUtils
-import android.view.KeyEvent
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
-import androidx.databinding.BaseObservable
+import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.laba4.model.Repository
+import androidx.lifecycle.viewModelScope
+import com.example.laba4.R
+import com.example.laba4.SingleLiveEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
-class SignInViewModel(val signInView: SignInView) {
+class  SignInViewModel(val context: Context):ViewModel() {
 
-    val signInRequest = SignInRequest("","")
+    val repository = Repository(context)
+
+    var email = MutableLiveData("")
+    var password = MutableLiveData("")
+
+    private val _loading = MutableLiveData(true)
+    val loading: LiveData<Boolean> = _loading
+
+    private val _errorMessage = MutableLiveData("")
+    val errorMessage:LiveData<String> = _errorMessage
+
+    val isUserSignedIn = SingleLiveEvent<Boolean>()
+
+    init{
+        CheckIfUserIsSignedIn()
+    }
 
     fun signIn(){
-        signInView.onSignInSuccess(signInRequest.getEmail(), signInRequest.getPassword())
-    }
-
-    fun signUp(){
-        signInView.goToSignUp()
-    }
-//
-//    fun onEmailChange(newEmail:String){
-//        signInRequest.email=newEmail
-//    }
-//
-//    fun onPasswordChange(newPassword:String){
-//        signInRequest.password=newPassword
-//    }
-//
-//    fun onEditorAction(textView: TextView, actionId: Int,keyEvent: KeyEvent?): Boolean {
-//        if (actionId == EditorInfo.IME_ACTION_SEND && isInputDataValid()) {
-//            signIn()
+        //TODO: ADD CHECKING IN WITH SERVER
+//        viewModelScope.launch {
+//            if (isInputDataValid){
+//                _loading.value=true
+//                //check in the network
+//                //if success
+//                isUserSignedIn.value=true
+//                //else show error
+//                _loading.value=false
+//            }
 //        }
-//        return false
-//    }
+        if (inputDataIsValid()) {
+            //check user in network
+            isUserSignedIn.value = true
+        }
+    }
 
-    class SignInRequest(private var email: String, private var password: String): BaseObservable() {
-        fun getEmail():String{
-            return email
+    private fun CheckIfUserIsSignedIn() {
+        viewModelScope.launch(Dispatchers.Main){
+            _loading.value = true
+            isUserSignedIn.value = repository.isUserSignedInInDB()
+            _loading.value = false
         }
-        fun setEmail(_email:String){
-            email=_email
-        }
+    }
 
-        fun getPassword():String{
-            return password
+    private fun inputDataIsValid():Boolean {
+        if (!email.value.isEmailValid()){
+            _errorMessage.value = context.resources.getString(R.string.error_incorrect_email)
+            return false
         }
-        fun setPassword(_password:String){
-            password=_password
+        if (password.value.isNullOrEmpty() || password.value!!.length<=2){
+            _errorMessage.value = context.resources.getString(R.string.error_incorrect_password)
+            return false
         }
-
-        fun isInputDataValid():Boolean {
-            return email.isEmailValid() && password.length > 2
-        }
-        private fun String.isEmailValid(): Boolean {
-            return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
-        }
+        return true
+    }
+    private fun String?.isEmailValid(): Boolean {
+        return !isNullOrEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
     }
 }

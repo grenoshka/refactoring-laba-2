@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/signInActivity"
         android:name="com.example.laba4.signin.SignInFragment"
-        android:label="SignInActivity" >
+        android:label="SignInActivity"
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInActivity_to_signUpActivity"
             app:destination="@id/signUpActivity" />
@@ -20,7 +21,7 @@
         android:id="@+id/signUpActivity"
         android:name="com.example.laba4.signup.SignUpFragment"
         android:label="activity_sign_up"
-        tools:layout="@layout/activity_sign_up" >
+        tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/action_signUpActivity_to_signInActivity"
             app:destination="@id/signInActivity" />
@@ -31,21 +32,30 @@
     <fragment
         android:id="@+id/menuActivity"
         android:name="com.example.laba4.menu.MenuFragment"
-        android:label="MenuActivity" >
+        android:label="MenuActivity"
+        tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/action_menuActivity_to_map"
-            app:destination="@id/map" />
-    </fragment>
-    <fragment
-        android:id="@+id/map"
-        android:name="com.example.laba4.map.MapFragment"
-        android:label="Map" >
+            app:destination="@id/leaderboardFragment" />
         <action
-            android:id="@+id/action_map_to_gameActivity"
+            android:id="@+id/action_menuActivity_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_menuActivity_to_gameActivity"
             app:destination="@id/gameActivity" />
     </fragment>
+    <fragment
+        android:id="@+id/leaderboardFragment"
+        android:name="com.example.laba4.leaderboard.LeaderboardFragment"
+        android:label="Leaderboard"
+        tools:layout="@layout/fragment_leaderboard"/>
     <activity
         android:id="@+id/gameActivity"
         android:name="com.example.laba4.game.GameActivity"
         android:label="GameActivity" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.laba4.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
