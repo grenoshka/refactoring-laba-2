@@ -39,7 +39,7 @@
 
             <com.bartbergmans.gradientbutton.views.GradientButton
                 android:id="@+id/buttonLeaderboard"
-                style="@style/GeneralGradientButton"
+                style="@style/NotFilledGradientButton"
                 android:text="@string/leaderboard"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
                 app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -48,7 +48,7 @@
 
             <com.bartbergmans.gradientbutton.views.GradientButton
                 android:id="@+id/buttonPlay"
-                style="@style/GeneralGradientButton"
+                style="@style/NotFilledGradientButton"
                 android:layout_marginBottom="50dp"
                 android:text="@string/play"
                 app:layout_constraintBottom_toTopOf="@+id/buttonLeaderboard"
@@ -57,7 +57,7 @@
 
             <com.bartbergmans.gradientbutton.views.GradientButton
                 android:id="@+id/buttonProfile"
-                style="@style/GeneralGradientButton"
+                style="@style/NotFilledGradientButton"
                 android:layout_marginTop="50dp"
                 android:text="@string/user_profile"
                 app:layout_constraintEnd_toEndOf="@+id/imageView"

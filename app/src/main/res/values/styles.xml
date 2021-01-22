@@ -26,4 +26,19 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="NotFilledGradientButton" parent="Widget.AppCompat.Light.ActionButton">
+        <item name="android:layout_width">200dp</item>
+        <item name="end_color">@color/gradientEnd</item>
+        <item name="start_color">@color/gradientStart</item>
+        <item name="orientation">top_bottom</item>
+        <item name="filled">false</item>
+        <item name="stroke">5dp</item>
+        <item name="fill_color">@color/translucent_white</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/button_shape</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>
