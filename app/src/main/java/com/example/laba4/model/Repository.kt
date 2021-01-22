@@ -25,7 +25,7 @@ class Repository (val context:Context) {
             Context.MODE_PRIVATE
         )
     }
-    suspend fun getUserInfo() =
+    suspend fun SignIn() =
         withContext(Dispatchers.IO) {userDao.getAllUsers()}
 
     suspend fun isUserSignedInInDB():Boolean =

@@ -7,9 +7,10 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
+    var token: String,
     var name: String,
     var email: String,
     var password: String,
-    var placeInRanking: String,
-    var points: String
+    var placeInRanking: Int,
+    var points: Int
 )

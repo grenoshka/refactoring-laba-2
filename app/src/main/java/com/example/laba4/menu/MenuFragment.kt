@@ -37,8 +37,4 @@ class MenuFragment : Fragment(){
             navController.navigate(R.id.profileFragment)
         }
     }
-
-    fun openMap(){
-        navController.navigate(R.id.leaderboardFragment)
-    }
 }

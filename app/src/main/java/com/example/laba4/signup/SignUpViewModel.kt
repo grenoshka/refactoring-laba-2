@@ -32,6 +32,7 @@ class SignUpViewModel (val context: Context):ViewModel() {
             _loading.value =true
             if (inputDataIsValid()){
                 //TODO:put user in db and network
+
                 _userSignedUp.value = true
             }
             _loading.value=false
