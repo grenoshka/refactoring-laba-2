@@ -100,13 +100,10 @@
         app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
-    <Button
+    <com.bartbergmans.gradientbutton.views.GradientButton
         android:id="@+id/buttonSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_shape"
+        style="@style/GeneralGradientButton"
         android:text="@string/sign_up"
-        android:textColor="@color/white"
         android:onClick="@{()->signUpViewModel.signUp()}"
         app:layout_constraintBottom_toTopOf="@+id/buttonGoToSignIn"
         app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView"

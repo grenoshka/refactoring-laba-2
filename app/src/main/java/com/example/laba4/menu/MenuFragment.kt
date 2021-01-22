@@ -4,17 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.laba4.R
 import com.example.laba4.databinding.FragmentMenuBinding
+import kotlinx.android.synthetic.main.fragment_menu.*
+import kotlinx.android.synthetic.main.fragment_sign_up.view.*
 
 class MenuFragment : Fragment(){
 
-    lateinit var navController:NavController
-    private var _binding:FragmentMenuBinding? = null
+    lateinit var navController: NavController
+    private var _binding: FragmentMenuBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,7 +26,17 @@ class MenuFragment : Fragment(){
     ): View? {
         _binding = DataBindingUtil.inflate(inflater,R.layout.fragment_menu, container,false)
         navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
+
+        setUpBackGround()
+
         return binding.root
+    }
+
+    private fun setUpBackGround(){
+        val imageView: ImageView = catBackgroundImageView
+        imageView.setBackgroundResource(R.drawable.cat3)
+        val mAnimationDrawable = imageView.background as AnimationDrawable
+        mAnimationDrawable.start()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,5 +49,9 @@ class MenuFragment : Fragment(){
         binding.buttonProfile.setOnClickListener {
             navController.navigate(R.id.profileFragment)
         }
+    }
+
+    fun openMap(){
+        navController.navigate(R.id.leaderboardFragment)
     }
 }

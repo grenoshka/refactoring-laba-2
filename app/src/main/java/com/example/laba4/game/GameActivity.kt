@@ -4,6 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.AssetFileDescriptor
 import android.graphics.*
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -26,6 +30,11 @@ class GameActivity : AppCompatActivity() {
         Runnable {
         // This is our thread
         var gameThread: Thread? = null
+
+        // It will be use for gyroscope
+        lateinit var sensorManager: SensorManager
+        lateinit var sensor: Sensor
+        lateinit var sensorEventListener: SensorEventListener
 
         // This is new. We need a SurfaceHolder
         // When we use Paint and Canvas in a thread
@@ -249,11 +258,51 @@ class GameActivity : AppCompatActivity() {
             playing = true
             gameThread = Thread(this)
             gameThread!!.start()
+            /*sensorManager.registerListener(
+                sensorEventListener,
+                sensor,
+                SensorManager.SENSOR_DELAY_FASTEST
+            )*/
         }
 
         // The SurfaceView class implements onTouchListener
         // So we can override this method and detect screen touches.
         override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
+
+            /*sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+            sensorEventListener = object : SensorEventListener {
+                override fun onSensorChanged(event: SensorEvent) {
+                    val rotationMatrix = FloatArray(16)
+                    SensorManager.getRotationMatrixFromVector(
+                        rotationMatrix, event.values
+                    )
+                    val remappedRotationMatrix = FloatArray(16)
+                    SensorManager.remapCoordinateSystem(
+                        rotationMatrix,
+                        SensorManager.AXIS_X,
+                        SensorManager.AXIS_Z,
+                        remappedRotationMatrix
+                    )
+
+                    // Convert to orientations
+                    val orientations = FloatArray(3)
+                    SensorManager.getOrientation(remappedRotationMatrix, orientations)
+                    for (i in 0..2) {
+                        orientations[i] = Math.toDegrees(orientations[i].toDouble()).toFloat()
+                    }
+                    //tv.setText(orientations[2] as Int.toString())
+                    when {
+                        orientations[2] < 0 -> paddle.setMovementState(paddle.RIGHT)
+                        orientations[2] > 0 -> paddle.setMovementState(paddle.LEFT)
+                        else -> paddle.setMovementState(paddle.STOPPED)
+                    }
+                }
+
+                override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+            }*/
+
+
             when (motionEvent.action and MotionEvent.ACTION_MASK) {
                 MotionEvent.ACTION_DOWN -> {
                     paused = false

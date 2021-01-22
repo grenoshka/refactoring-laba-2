@@ -12,32 +12,56 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageView
+                android:id="@+id/catBackgroundImageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="centerCrop"
+                />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="150dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginBottom="150dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/background_shape" />
+
+            <com.bartbergmans.gradientbutton.views.GradientButton
                 android:id="@+id/buttonLeaderboard"
-                style="@style/generalButton"
-                android:layout_marginTop="40dp"
+                style="@style/GeneralGradientButton"
                 android:text="@string/leaderboard"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonPlay" />
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
 
-            <Button
+            <com.bartbergmans.gradientbutton.views.GradientButton
                 android:id="@+id/buttonPlay"
-                style="@style/generalButton"
-                android:layout_marginTop="350dp"
+                style="@style/GeneralGradientButton"
+                android:layout_marginBottom="50dp"
                 android:text="@string/play"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/buttonLeaderboard"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView" />
 
-            <Button
+            <com.bartbergmans.gradientbutton.views.GradientButton
                 android:id="@+id/buttonProfile"
-                style="@style/generalButton"
-                android:layout_marginTop="40dp"
+                style="@style/GeneralGradientButton"
+                android:layout_marginTop="50dp"
                 android:text="@string/user_profile"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/buttonLeaderboard" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
