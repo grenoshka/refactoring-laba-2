@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <com.bartbergmans.gradientbutton.views.GradientButton
+            android:id="@+id/gradient_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:text="button1"
+            app:end_color="@color/gradientEnd"
+            app:filled="false"
+            app:orientation="top_bottom"
+            app:start_color="@color/gradientStart"
+            app:stroke="3dp" />
+
+        <com.bartbergmans.gradientbutton.views.GradientButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:text="button2"
+            app:end_color="@color/gradientEnd"
+            app:fill_color="@color/white"
+            app:filled="false"
+            app:orientation="top_bottom"
+            app:start_color="@color/gradientStart"
+            app:stroke="3dp" />
+
+        <com.bartbergmans.gradientbutton.views.GradientButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="button3"
+            android:textColor="@android:color/white"
+            app:end_color="@color/gradientEnd"
+            app:filled="true"
+            app:orientation="top_bottom"
+            app:start_color="@color/gradientStart"
+            app:stroke="3dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <com.bartbergmans.gradientbutton.views.GradientButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="button4"
+            app:circular="true"
+            app:end_color="@color/gradientEnd"
+            app:filled="false"
+            app:orientation="top_bottom"
+            app:start_color="@color/gradientStart"
+            app:stroke="3dp" />
+
+        <com.bartbergmans.gradientbutton.views.GradientButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="button5"
+            app:circular="true"
+            app:end_color="@color/gradientEnd"
+            app:fill_color="@color/white"
+            app:filled="false"
+            app:orientation="top_bottom"
+            app:start_color="@color/gradientStart"
+            app:stroke="3dp" />
+
+        <com.bartbergmans.gradientbutton.views.GradientButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="button6"
+            android:textColor="@android:color/white"
+            app:circular="true"
+            app:end_color="@color/gradientEnd"
+            app:filled="true"
+            app:orientation="top_bottom"
+            app:start_color="@color/gradientStart"
+            app:stroke="3dp" />
+    </LinearLayout>
+</LinearLayout>
