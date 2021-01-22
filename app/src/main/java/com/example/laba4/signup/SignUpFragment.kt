@@ -38,7 +38,7 @@ class SignUpFragment : Fragment(){
 
     private fun setUpBackGround(){
         val imageView: ImageView = binding.root.catBackgroundImageView
-        imageView.setBackgroundResource(R.drawable.cat2)
+        imageView.setBackgroundResource(R.drawable.cat4)
         val mAnimationDrawable = imageView.background as AnimationDrawable
         mAnimationDrawable.start()
     }

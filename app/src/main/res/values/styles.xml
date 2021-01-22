@@ -8,9 +8,8 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="AppTheme.Splash">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:background">@drawable/splash</item>
+    <style name="Splash" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
     <style name="GeneralGradientButton" parent="Widget.AppCompat.Light.ActionButton">
@@ -34,7 +33,7 @@
         <item name="filled">false</item>
         <item name="stroke">5dp</item>
         <item name="fill_color">@color/translucent_white</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">55dp</item>
         <item name="android:background">@drawable/button_shape</item>
         <item name="textAllCaps">false</item>
         <item name="android:textColor">@color/black</item>
