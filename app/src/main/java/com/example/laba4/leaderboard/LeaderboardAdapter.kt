@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.laba4.R
 import kotlinx.android.synthetic.main.fragment_leaderboard.view.*
+import kotlinx.android.synthetic.main.leader_on_board.view.*
 
 class LeaderboardAdapter (val leaders:List<Leader>):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -27,8 +28,8 @@ class LeaderboardAdapter (val leaders:List<Leader>):RecyclerView.Adapter<Recycle
     }
 
     class LeaderHolder(itemview: View):RecyclerView.ViewHolder(itemview){
-        val position: TextView = itemview.positionTextView
-        val name: TextView = itemview.nameTextView
-        val points:TextView = itemview.pointsTextView
+        val position: TextView = itemview.leaderPosition
+        val name: TextView = itemview.leaderName
+        val points:TextView = itemview.leaderPoints
     }
 }
