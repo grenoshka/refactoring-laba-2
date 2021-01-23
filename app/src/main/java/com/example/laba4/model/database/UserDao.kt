@@ -35,6 +35,9 @@ interface UserDao {
 
     @Query("SELECT COUNT(*) FROM myUsers WHERE points > (SELECT points from myUsers where email =:email and password =:password) + 1")
     fun getPlaceOnLeaderboard(email:String, password: String):Int
+
+    @Query("UPDATE myUsers set points =:points WHERE id=:id")
+    fun updateUserPoints(id:Int, points:Int)
     // Получение всех Object из бд с условием
     //@Query("SELECT * FROM myUsers WHERE id LIKE :condition")
     //fun getAllPeopleWithFavoriteColor(condition: String): List<User>

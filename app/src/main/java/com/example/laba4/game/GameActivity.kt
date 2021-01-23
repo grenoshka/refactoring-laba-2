@@ -14,14 +14,17 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.laba4.R
+import com.example.laba4.model.Repository
+import com.example.laba4.model.database.User
 import java.io.IOException
 
-
+lateinit var gameViewModel:GameViewModel
 class GameActivity : AppCompatActivity() {
     private lateinit var breakoutView:BreakoutView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_game)
+        gameViewModel = GameViewModel(this)
         breakoutView = BreakoutView(this)
         setContentView(breakoutView)
     }
@@ -220,6 +223,7 @@ class GameActivity : AppCompatActivity() {
                 if (lives == 0) {
                     paused = true
                     lost = true
+                    gameViewModel.updatePoints(score)
                     createBricksAndRestart()
                 }
             }
@@ -246,6 +250,7 @@ class GameActivity : AppCompatActivity() {
             // Pause if cleared screen
             if (score == numBricks * 20) {
                 paused = true
+                gameViewModel.updatePoints(score)
                 createBricksAndRestart()
             }
         }

@@ -48,6 +48,9 @@ class Repository (val context:Context) {
 
     suspend fun getLeaders():List<User> =
         withContext(Dispatchers.IO){userDao.getAllUsersOrderedByPoints()}
+
+    suspend fun updateUserPoints(id:Int, points: Int) =
+        withContext(Dispatchers.IO){userDao.updateUserPoints(id,points)}
     //            val defaultToken = context.resources.getString(R.string.defaultToken)
 //            val storedToken = sharedPref.getString(
 //                context.resources.getString(R.string.tokenKey),
