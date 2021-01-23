@@ -25,6 +25,7 @@ class GameActivity : AppCompatActivity() {
         breakoutView = BreakoutView(this)
         setContentView(breakoutView)
     }
+
     internal class BreakoutView(context: Context) :
         SurfaceView(context),
         Runnable {
@@ -36,56 +37,37 @@ class GameActivity : AppCompatActivity() {
         lateinit var sensor: Sensor
         lateinit var sensorEventListener: SensorEventListener
 
-        // This is new. We need a SurfaceHolder
-        // When we use Paint and Canvas in a thread
-        // We will see it in action in the draw method soon.
         var ourHolder: SurfaceHolder
 
-        // A boolean which we will set and unset
-        // when the game is running- or not.
         @Volatile
         var playing = false
-
-        // Game is paused at the start
+        var lost = false
         var paused = true
 
-        // A Canvas and a Paint object
         lateinit var canvas: Canvas
         var paint: Paint
 
-        // This variable tracks the game frame rate
         var fps: Long = 0
 
-        // This is used to help calculate the fps
         private var timeThisFrame: Long = 0
 
-        // The size of the screen in pixels
         var screenX: Int
         var screenY: Int
 
-        // The players paddle
         var paddle: Paddle
-
-        // A ball
         var ball: Ball
-
-        // Up to 200 bricks
         var bricks = arrayOfNulls<Brick>(200)
         var numBricks = 0
 
-        // The score
         var score = 0
-
-        // Lives
         var lives = 3
-        fun createBricksAndRestart() {
 
-            // Put the ball back to the start
+        fun createBricksAndRestart() {
             ball.reset(screenX, screenY)
+            paddle.reset()
             val brickWidth = screenX / 8
             val brickHeight = screenY / 20
 
-            // Build a wall of bricks
             numBricks = 0
             for (column in 0..7) {
                 for (row in 0..6) {
@@ -93,7 +75,6 @@ class GameActivity : AppCompatActivity() {
                     numBricks++
                 }
             }
-            // if game over reset scores and lives
             if (lives == 0) {
                 score = 0
                 lives = 3
@@ -108,23 +89,14 @@ class GameActivity : AppCompatActivity() {
                 if (!paused) {
                     update()
                 }
-                // Draw the frame
                 draw()
-                // Calculate the fps this frame
-                // We can then use the result to
-                // time animations and more.
                 timeThisFrame = System.currentTimeMillis() - startFrameTime
                 if (timeThisFrame >= 1) {
                     fps = 1000 / timeThisFrame
                 }
             }
         }
-
-        // Everything that needs to be updated goes in here
-        // Movement, collision detection etc.
         fun update() {
-
-            // Move the paddle if required
             paddle.update(fps)
             ball.update(fps)
 
@@ -134,55 +106,51 @@ class GameActivity : AppCompatActivity() {
                     if (RectF.intersects(bricks[i]!!.rect, ball.rect)) {
                         bricks[i]!!.setInvisible()
                         ball.reverseYVelocity()
-                        score = score + 10
+                        score = score + 20
                     }
                 }
             }
-            // Check for ball colliding with paddle
             if (RectF.intersects(paddle.rect, ball.rect)) {
                 ball.setRandomXVelocity()
                 ball.reverseYVelocity()
                 ball.clearObstacleY(paddle.rect.top - 2)
             }
-            // Bounce the ball back when it hits the bottom of screen
-            if (ball.rect.bottom > screenY) {
+            if (ball.rect.bottom >= screenY) {
                 ball.reverseYVelocity()
                 ball.clearObstacleY(screenY - 2.toFloat())
-
-                // Lose a life
                 lives--
                 if (lives == 0) {
                     paused = true
+                    lost = true
                     createBricksAndRestart()
                 }
             }
 
             // Bounce the ball back when it hits the top of screen
-            if (ball.rect.top < 0) {
+            if (ball.rect.top <= 0) {
                 ball.reverseYVelocity()
-                ball.clearObstacleY(12f)
+                ball.clearObstacleY(ball.ballHeight+2f)
             }
 
             // If the ball hits left wall bounce
-            if (ball.rect.left < 0) {
+            if (ball.rect.left <= 0) {
                 ball.reverseXVelocity()
-                ball.clearObstacleX(2f)
+                ball.clearObstacleX(ball.ballWidth+2f)
             }
 
             // If the ball hits right wall bounce
-            if (ball.rect.right > screenX - 10) {
+            if (ball.rect.right >= screenX.toFloat()) {
                 ball.reverseXVelocity()
-                ball.clearObstacleX(screenX - 22.toFloat())
+                //ball.clearObstacleX(screenX - 22.toFloat())
             }
 
+
             // Pause if cleared screen
-            if (score == numBricks * 10) {
+            if (score == numBricks * 20) {
                 paused = true
                 createBricksAndRestart()
             }
         }
-
-        // Draw the newly updated scene
         @SuppressLint("UseCompatLoadingForDrawables")
         fun draw() {
 
@@ -222,16 +190,16 @@ class GameActivity : AppCompatActivity() {
 
                 // Draw the score
                 paint.textSize = 40f
-                canvas.drawText("Score: $score   Lives: $lives", 10f, 50f, paint)
+                canvas.drawText("Score: $score   Lives: $lives", 100f, screenY.toFloat()-100f, paint)
 
                 // Has the player cleared the screen?
-                if (score == numBricks * 10) {
+                if (score == numBricks * 20) {
                     paint.textSize = 90f
                     canvas.drawText("YOU HAVE WON!", 10f, screenY / 2.toFloat(), paint)
                 }
 
                 // Has the player lost?
-                if (lives <= 0) {
+                if (lost) {
                     paint.textSize = 90f
                     canvas.drawText("YOU HAVE LOST!", 10f, screenY / 2.toFloat(), paint)
                 }
@@ -305,6 +273,8 @@ class GameActivity : AppCompatActivity() {
 
             when (motionEvent.action and MotionEvent.ACTION_MASK) {
                 MotionEvent.ACTION_DOWN -> {
+                    if (lost)
+                        lost = false
                     paused = false
                     if (motionEvent.x > screenX / 2) {
                         paddle.setMovementState(paddle.RIGHT)

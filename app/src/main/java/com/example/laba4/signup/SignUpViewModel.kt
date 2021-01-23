@@ -31,8 +31,7 @@ class SignUpViewModel (val context: Context):ViewModel() {
         viewModelScope.launch {
             _loading.value =true
             if (inputDataIsValid()){
-                //TODO:put user in db and network
-
+                repository.signUp(email,password,name,)
                 _userSignedUp.value = true
             }
             _loading.value=false

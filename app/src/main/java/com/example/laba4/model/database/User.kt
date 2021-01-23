@@ -12,5 +12,6 @@ data class User(
     var email: String,
     var password: String,
     var placeInRanking: Int,
-    var points: Int
+    var points: Int,
+    var isLoggedIn:Boolean
 )
