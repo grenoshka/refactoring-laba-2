@@ -6,6 +6,11 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="translucent_white">#90FFFFFF</color>
+    <color name="gray">#A9A9A9</color>
     <color name="gradientStart">#483D8B</color>
     <color name="gradientEnd">#6495ED</color>
+    <color name="lightOrange">#F97C3C</color>
+    <color name="lightYellow">#FDB54E</color>
+    <color name="lightGreen">#64B678</color>
+    <color name="lightBlue">#478AEA</color>
 </resources>

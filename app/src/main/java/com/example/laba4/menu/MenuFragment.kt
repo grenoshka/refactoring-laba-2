@@ -14,6 +14,7 @@ import androidx.navigation.Navigation
 import com.example.laba4.databinding.FragmentMenuBinding
 import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_sign_up.view.*
+import com.captaindroid.tvg.Tvg
 
 class MenuFragment : Fragment(){
 

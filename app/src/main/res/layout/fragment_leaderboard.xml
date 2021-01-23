@@ -8,19 +8,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/backGroundImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ranking_cat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/background_shape"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayoutLeaderboard"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
             android:translationY="-4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/leadersTextView">
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintEnd_toEndOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/nameTextView">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/leaderboardRecyclerView"
@@ -32,44 +57,41 @@
             android:id="@+id/leadersTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/bungee_shade"
             android:text="@string/leaders"
-            android:textSize="36sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="@color/white"
+            android:textSize="46sp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
         <TextView
             android:id="@+id/positionTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="30dp"
+            style="@style/GeneralText"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/position"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/swipeRefreshLayoutLeaderboard"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/leadersTextView" />
 
         <TextView
             android:id="@+id/nameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
+            style="@style/GeneralText"
+            android:layout_marginTop="16dp"
             android:text="@string/name"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/swipeRefreshLayoutLeaderboard"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/leadersTextView" />
 
         <TextView
             android:id="@+id/pointsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="30dp"
+            style="@style/GeneralText"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
             android:text="@string/points"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/swipeRefreshLayoutLeaderboard"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/leadersTextView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

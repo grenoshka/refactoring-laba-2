@@ -46,42 +46,36 @@
 
             <EditText
                 android:id="@+id/editTextTextEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/EditTextStyle"
                 android:layout_marginTop="65dp"
-                android:ems="10"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:text="@={signInViewModel.email}"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageView2"
+                app:layout_constraintStart_toStartOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
             <EditText
                 android:id="@+id/editTextTextPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/EditTextStyle"
                 android:layout_marginTop="32dp"
-                android:ems="10"
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:text="@={signInViewModel.password}"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageView2"
+                app:layout_constraintStart_toStartOf="@+id/imageView2"
                 app:layout_constraintTop_toBottomOf="@+id/editTextTextEmail" />
 
-        <com.bartbergmans.gradientbutton.views.GradientButton
-            android:id="@+id/signInButton"
-            style="@style/GeneralGradientButton"
-            android:layout_marginBottom="2dp"
-            android:text="@string/sign_in"
-            android:onClick="@{()->signInViewModel.signIn()}"
-            app:layout_constraintBottom_toTopOf="@+id/buttonGoToSignUp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent" />
+            <com.bartbergmans.gradientbutton.views.GradientButton
+                android:id="@+id/signInButton"
+                style="@style/GeneralGradientButton"
+                android:textAppearance="@style/AllertaText"
+                android:layout_marginBottom="2dp"
+                android:onClick="@{()->signInViewModel.signIn()}"
+                android:text="@string/sign_in"
+                app:layout_constraintBottom_toTopOf="@+id/buttonGoToSignUp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView"
@@ -96,12 +90,13 @@
             <Button
                 android:id="@+id/buttonGoToSignUp"
                 style="?android:attr/borderlessButtonStyle"
+                android:textAppearance="@style/AllertaText"
+                android:textSize="15sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
                 android:text="@string/have_not_account"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

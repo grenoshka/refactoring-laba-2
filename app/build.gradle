@@ -78,6 +78,9 @@ dependencies {
 
     // Gradient buttons
     compile 'com.github.bartbergmans:GradientButton:1.0.0'
+
+    // Gradient text
+    implementation 'com.github.tushar09:Gradient-Textview:1.1'
 }
 
 kapt {
