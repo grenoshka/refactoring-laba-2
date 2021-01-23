@@ -37,37 +37,89 @@ class GameActivity : AppCompatActivity() {
         lateinit var sensor: Sensor
         lateinit var sensorEventListener: SensorEventListener
 
+        // This is new. We need a SurfaceHolder
+        // When we use Paint and Canvas in a thread
+        // We will see it in action in the draw method soon.
         var ourHolder: SurfaceHolder
 
+        // A boolean which we will set and unset
+        // when the game is running- or not.
         @Volatile
         var playing = false
         var lost = false
         var paused = true
 
+        // A Canvas and a Paint object
         lateinit var canvas: Canvas
         var paint: Paint
 
+        // This variable tracks the game frame rate
         var fps: Long = 0
 
+        // This is used to help calculate the fps
         private var timeThisFrame: Long = 0
 
+        // The size of the screen in pixels
         var screenX: Int
         var screenY: Int
 
+        // The players paddle
         var paddle: Paddle
+
+        // A ball
         var ball: Ball
+
+        // Up to 200 bricks
         var bricks = arrayOfNulls<Brick>(200)
         var numBricks = 0
 
+        // The score
         var score = 0
+
+        // Lives
         var lives = 3
 
         fun createBricksAndRestart() {
+
+            sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+            sensorEventListener = object : SensorEventListener {
+                override fun onSensorChanged(event: SensorEvent) {
+                    val rotationMatrix = FloatArray(16)
+                    SensorManager.getRotationMatrixFromVector(
+                        rotationMatrix, event.values
+                    )
+                    val remappedRotationMatrix = FloatArray(16)
+                    SensorManager.remapCoordinateSystem(
+                        rotationMatrix,
+                        SensorManager.AXIS_X,
+                        SensorManager.AXIS_Z,
+                        remappedRotationMatrix
+                    )
+
+                    // Convert to orientations
+                    val orientations = FloatArray(3)
+                    SensorManager.getOrientation(remappedRotationMatrix, orientations)
+                    for (i in 0..2) {
+                        orientations[i] = Math.toDegrees(orientations[i].toDouble()).toFloat()
+                    }
+                    when {
+                        orientations[0] > 0 -> paddle.setMovementState(paddle.RIGHT)
+                        orientations[0] < 0 -> paddle.setMovementState(paddle.LEFT)
+                        else -> paddle.setMovementState(paddle.STOPPED)
+                    }
+                }
+
+                override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+            }
+
+            // Put the ball back to the start
             ball.reset(screenX, screenY)
             paddle.reset()
             val brickWidth = screenX / 8
             val brickHeight = screenY / 20
 
+            // Build a wall of bricks
             numBricks = 0
             for (column in 0..7) {
                 for (row in 0..6) {
@@ -75,6 +127,7 @@ class GameActivity : AppCompatActivity() {
                     numBricks++
                 }
             }
+            // if game over reset scores and lives
             if (lives == 0) {
                 score = 0
                 lives = 3
@@ -86,17 +139,59 @@ class GameActivity : AppCompatActivity() {
                 // Capture the current time in milliseconds in startFrameTime
                 val startFrameTime = System.currentTimeMillis()
                 // Update the frame
+
+                sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+                sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+                sensorEventListener = object : SensorEventListener {
+                    override fun onSensorChanged(event: SensorEvent) {
+                        val rotationMatrix = FloatArray(16)
+                        SensorManager.getRotationMatrixFromVector(
+                            rotationMatrix, event.values
+                        )
+                        val remappedRotationMatrix = FloatArray(16)
+                        SensorManager.remapCoordinateSystem(
+                            rotationMatrix,
+                            SensorManager.AXIS_X,
+                            SensorManager.AXIS_Z,
+                            remappedRotationMatrix
+                        )
+
+                        // Convert to orientations
+                        val orientations = FloatArray(3)
+                        SensorManager.getOrientation(remappedRotationMatrix, orientations)
+                        for (i in 0..2) {
+                            orientations[i] = Math.toDegrees(orientations[i].toDouble()).toFloat()
+                        }
+                        when {
+                            orientations[0] > 0 -> paddle.setMovementState(paddle.RIGHT)
+                            orientations[0] < 0 -> paddle.setMovementState(paddle.LEFT)
+                            else -> paddle.setMovementState(paddle.STOPPED)
+                        }
+                    }
+
+                    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+                }
+
                 if (!paused) {
                     update()
                 }
+                // Draw the frame
                 draw()
+                // Calculate the fps this frame
+                // We can then use the result to
+                // time animations and more.
                 timeThisFrame = System.currentTimeMillis() - startFrameTime
                 if (timeThisFrame >= 1) {
                     fps = 1000 / timeThisFrame
                 }
             }
         }
+
+        // Everything that needs to be updated goes in here
+        // Movement, collision detection etc.
         fun update() {
+
+            // Move the paddle if required
             paddle.update(fps)
             ball.update(fps)
 
@@ -110,6 +205,7 @@ class GameActivity : AppCompatActivity() {
                     }
                 }
             }
+            // Check for ball colliding with paddle
             if (RectF.intersects(paddle.rect, ball.rect)) {
                 ball.setRandomXVelocity()
                 ball.reverseYVelocity()
@@ -118,6 +214,8 @@ class GameActivity : AppCompatActivity() {
             if (ball.rect.bottom >= screenY) {
                 ball.reverseYVelocity()
                 ball.clearObstacleY(screenY - 2.toFloat())
+
+                // Lose a life
                 lives--
                 if (lives == 0) {
                     paused = true
@@ -151,6 +249,8 @@ class GameActivity : AppCompatActivity() {
                 createBricksAndRestart()
             }
         }
+
+        // Draw the newly updated scene
         @SuppressLint("UseCompatLoadingForDrawables")
         fun draw() {
 
@@ -161,13 +261,14 @@ class GameActivity : AppCompatActivity() {
 
                 // Draw the background color
                 //canvas.drawColor(Color.argb(255, 26, 128, 182))
-                val drawable = resources.getDrawable(R.drawable.game_background,null)
+                val drawable = resources.getDrawable(R.drawable.game_background2,null)
                 drawable.setBounds(left,top,right,bottom)
                 drawable.draw(canvas)
                 // Choose the brush color for drawing
-                paint.color = Color.argb(255, 255, 255, 255)
+                paint.color = Color.argb(255, 148, 0, 211)
+
                 val paintPaddle = Paint()
-                paintPaddle.color=Color.argb(255,174,205,232)
+                paintPaddle.color=Color.argb(255,100,149,237)
 
                 // Draw the paddle
                 canvas.drawRect(paddle.rect, paintPaddle)
@@ -176,7 +277,7 @@ class GameActivity : AppCompatActivity() {
                 canvas.drawRect(ball.rect, paint)
 
                 // Change the brush color for drawing
-                paint.color = Color.argb(255, 140, 100, 56)
+                paint.color = Color.argb(255, 189, 183, 107)
 
                 // Draw the bricks if visible
                 for (i in 0 until numBricks) {
@@ -186,7 +287,7 @@ class GameActivity : AppCompatActivity() {
                 }
 
                 // Choose the brush color for drawing
-                paint.color = Color.argb(255, 255, 255, 255)
+                paint.color = Color.argb(255, 148, 0, 211)
 
                 // Draw the score
                 paint.textSize = 40f
@@ -226,11 +327,11 @@ class GameActivity : AppCompatActivity() {
             playing = true
             gameThread = Thread(this)
             gameThread!!.start()
-            /*sensorManager.registerListener(
+            sensorManager.registerListener(
                 sensorEventListener,
                 sensor,
                 SensorManager.SENSOR_DELAY_FASTEST
-            )*/
+            )
         }
 
         // The SurfaceView class implements onTouchListener
