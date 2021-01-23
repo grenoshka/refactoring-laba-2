@@ -1,12 +1,15 @@
 package com.example.laba4.profile
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.example.laba4.databinding.FragmentProfileBinding
+import com.captaindroid.tvg.Tvg
 
 class ProfileFragment : Fragment() {
 
@@ -18,6 +21,16 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater)
+
+        Tvg.change(
+            binding.profileTextView as TextView, intArrayOf(
+                Color.parseColor("#F97C3C"),
+                Color.parseColor("#FDB54E"),
+                Color.parseColor("#64B678"),
+                Color.parseColor("#478AEA")
+            )
+        )
+
         profileViewModel = ProfileViewModel(requireContext())
         return binding.root
     }

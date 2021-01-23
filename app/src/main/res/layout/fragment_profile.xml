@@ -16,80 +16,128 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/userAva"
-            android:layout_width="173dp"
-            android:layout_height="235dp"
-            android:layout_marginTop="150dp"
+            android:id="@+id/imageView3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/catik"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:id="@+id/shadowBackgroundImageView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="64dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/background_shape" />
+
+        <ImageView
+            android:id="@+id/userAva"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView2"
+            app:layout_constraintTop_toBottomOf="@+id/profileTextView"
+            android:src="@drawable/youlick"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/profileUserName"
+            style="@style/AllertaText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="55dp"
             android:text="@string/name"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView2"
             app:layout_constraintTop_toBottomOf="@+id/userAva" />
 
         <TextView
             android:id="@+id/profilePoints"
+            style="@style/AllertaText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
             android:text="@string/points"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView2"
             app:layout_constraintTop_toBottomOf="@+id/profileUserName" />
 
         <TextView
             android:id="@+id/profileLeaderboard"
-            android:layout_width="wrap_content"
+            style="@style/AllertaText"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
             android:text="@string/leaderboard_position"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView2"
             app:layout_constraintTop_toBottomOf="@+id/profilePoints" />
 
         <TextView
             android:id="@+id/profileUserNameItself"
+            style="@style/AllertaText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="16dp"
             android:text="TextView"
+            android:textColor="@color/lightGreen"
             android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView2"
             app:layout_constraintTop_toBottomOf="@+id/userAva" />
 
         <TextView
             android:id="@+id/profilePointsItself"
+            style="@style/AllertaText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
             android:text="TextView"
+            android:textColor="@color/lightGreen"
             android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView2"
             app:layout_constraintTop_toBottomOf="@+id/profileUserNameItself" />
 
         <TextView
             android:id="@+id/profileLeaderboardItself"
+            style="@style/AllertaText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="16dp"
             android:text="TextView"
+            android:textColor="@color/lightGreen"
             android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView2"
             app:layout_constraintTop_toBottomOf="@+id/profilePointsItself" />
+
+        <TextView
+            android:id="@+id/profileTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bungee_shade"
+            android:text="@string/profile"
+            android:textColor="@color/white"
+            android:textSize="46sp"
+            app:layout_constraintEnd_toEndOf="@+id/shadowBackgroundImageView2"
+            app:layout_constraintStart_toStartOf="@+id/shadowBackgroundImageView2"
+            app:layout_constraintTop_toTopOf="@+id/shadowBackgroundImageView2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
