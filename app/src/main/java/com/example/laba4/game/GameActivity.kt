@@ -277,7 +277,7 @@ class GameActivity : AppCompatActivity() {
                 canvas.drawRect(ball.rect, paint)
 
                 // Change the brush color for drawing
-                paint.color = Color.argb(255, 140, 100, 56)
+                paint.color = Color.argb(255, 189, 183, 107)
 
                 // Draw the bricks if visible
                 for (i in 0 until numBricks) {
@@ -287,7 +287,7 @@ class GameActivity : AppCompatActivity() {
                 }
 
                 // Choose the brush color for drawing
-                paint.color = Color.argb(255, 240, 230, 140)
+                paint.color = Color.argb(255, 148, 0, 211)
 
                 // Draw the score
                 paint.textSize = 40f
