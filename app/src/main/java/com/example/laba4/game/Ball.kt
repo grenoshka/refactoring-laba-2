@@ -8,14 +8,14 @@ class Ball(screenX: Int, screenY: Int) {
     var rect: RectF
     var xVelocity: Float
     var yVelocity: Float
-    var ballWidth = 10f
-    var ballHeight = 10f
+    var ballWidth = 50f
+    var ballHeight = 50f
 
     fun update(fps: Long) {
         rect.left = rect.left + xVelocity / fps
         rect.top = rect.top + yVelocity / fps
         rect.right = rect.left + ballWidth
-        rect.bottom = rect.top - ballHeight
+        rect.bottom = rect.top + ballHeight
     }
 
     fun reverseYVelocity() {
@@ -45,10 +45,10 @@ class Ball(screenX: Int, screenY: Int) {
     }
 
     fun reset(x: Int, y: Int) {
-        rect.left = x / 2.toFloat()
-        rect.top = y - 20.toFloat()
-        rect.right = x / 2 + ballWidth
-        rect.bottom = y - 20 - ballHeight
+        rect.left = x / 2.toFloat()-ballWidth/2
+        rect.top = y - 50.toFloat()-ballHeight
+        rect.right = x / 2 + ballWidth/2
+        rect.bottom = y - 50f
     }
 
     init {

@@ -21,9 +21,11 @@ class GameActivity : AppCompatActivity() {
     private lateinit var breakoutView:BreakoutView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //setContentView(R.layout.activity_game)
         breakoutView = BreakoutView(this)
         setContentView(breakoutView)
     }
+
     internal class BreakoutView(context: Context) :
         SurfaceView(context),
         Runnable {
@@ -44,8 +46,7 @@ class GameActivity : AppCompatActivity() {
         // when the game is running- or not.
         @Volatile
         var playing = false
-
-        // Game is paused at the start
+        var lost = false
         var paused = true
 
         // A Canvas and a Paint object
@@ -77,6 +78,7 @@ class GameActivity : AppCompatActivity() {
 
         // Lives
         var lives = 3
+
         fun createBricksAndRestart() {
 
             sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -113,8 +115,9 @@ class GameActivity : AppCompatActivity() {
 
             // Put the ball back to the start
             ball.reset(screenX, screenY)
-            val brickWidth = screenX / 6
-            val brickHeight = screenY / 16
+            paddle.reset()
+            val brickWidth = screenX / 8
+            val brickHeight = screenY / 20
 
             // Build a wall of bricks
             numBricks = 0
@@ -198,7 +201,7 @@ class GameActivity : AppCompatActivity() {
                     if (RectF.intersects(bricks[i]!!.rect, ball.rect)) {
                         bricks[i]!!.setInvisible()
                         ball.reverseYVelocity()
-                        score = score + 10
+                        score = score + 20
                     }
                 }
             }
@@ -208,8 +211,7 @@ class GameActivity : AppCompatActivity() {
                 ball.reverseYVelocity()
                 ball.clearObstacleY(paddle.rect.top - 2)
             }
-            // Bounce the ball back when it hits the bottom of screen
-            if (ball.rect.bottom > screenY) {
+            if (ball.rect.bottom >= screenY) {
                 ball.reverseYVelocity()
                 ball.clearObstacleY(screenY - 2.toFloat())
 
@@ -217,30 +219,32 @@ class GameActivity : AppCompatActivity() {
                 lives--
                 if (lives == 0) {
                     paused = true
+                    lost = true
                     createBricksAndRestart()
                 }
             }
 
             // Bounce the ball back when it hits the top of screen
-            if (ball.rect.top < 0) {
+            if (ball.rect.top <= 0) {
                 ball.reverseYVelocity()
-                ball.clearObstacleY(12f)
+                ball.clearObstacleY(ball.ballHeight+2f)
             }
 
             // If the ball hits left wall bounce
-            if (ball.rect.left < 0) {
+            if (ball.rect.left <= 0) {
                 ball.reverseXVelocity()
-                ball.clearObstacleX(2f)
+                ball.clearObstacleX(ball.ballWidth+2f)
             }
 
             // If the ball hits right wall bounce
-            if (ball.rect.right > screenX - 10) {
+            if (ball.rect.right >= screenX.toFloat()) {
                 ball.reverseXVelocity()
-                ball.clearObstacleX(screenX - 22.toFloat())
+                //ball.clearObstacleX(screenX - 22.toFloat())
             }
 
+
             // Pause if cleared screen
-            if (score == numBricks * 10) {
+            if (score == numBricks * 20) {
                 paused = true
                 createBricksAndRestart()
             }
@@ -249,6 +253,7 @@ class GameActivity : AppCompatActivity() {
         // Draw the newly updated scene
         @SuppressLint("UseCompatLoadingForDrawables")
         fun draw() {
+
             // Make sure our drawing surface is valid or we crash
             if (ourHolder.surface.isValid) {
                 // Lock the canvas ready to draw
@@ -286,16 +291,16 @@ class GameActivity : AppCompatActivity() {
 
                 // Draw the score
                 paint.textSize = 40f
-                canvas.drawText("Score: $score   Lives: $lives", 10f, 50f, paint)
+                canvas.drawText("Score: $score   Lives: $lives", 100f, screenY.toFloat()-100f, paint)
 
                 // Has the player cleared the screen?
-                if (score == numBricks * 10) {
+                if (score == numBricks * 20) {
                     paint.textSize = 90f
                     canvas.drawText("YOU HAVE WON!", 10f, screenY / 2.toFloat(), paint)
                 }
 
                 // Has the player lost?
-                if (lives <= 0) {
+                if (lost) {
                     paint.textSize = 90f
                     canvas.drawText("YOU HAVE LOST!", 10f, screenY / 2.toFloat(), paint)
                 }
@@ -333,13 +338,53 @@ class GameActivity : AppCompatActivity() {
         // So we can override this method and detect screen touches.
         override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
 
+            /*sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+            sensorEventListener = object : SensorEventListener {
+                override fun onSensorChanged(event: SensorEvent) {
+                    val rotationMatrix = FloatArray(16)
+                    SensorManager.getRotationMatrixFromVector(
+                        rotationMatrix, event.values
+                    )
+                    val remappedRotationMatrix = FloatArray(16)
+                    SensorManager.remapCoordinateSystem(
+                        rotationMatrix,
+                        SensorManager.AXIS_X,
+                        SensorManager.AXIS_Z,
+                        remappedRotationMatrix
+                    )
+
+                    // Convert to orientations
+                    val orientations = FloatArray(3)
+                    SensorManager.getOrientation(remappedRotationMatrix, orientations)
+                    for (i in 0..2) {
+                        orientations[i] = Math.toDegrees(orientations[i].toDouble()).toFloat()
+                    }
+                    //tv.setText(orientations[2] as Int.toString())
+                    when {
+                        orientations[2] < 0 -> paddle.setMovementState(paddle.RIGHT)
+                        orientations[2] > 0 -> paddle.setMovementState(paddle.LEFT)
+                        else -> paddle.setMovementState(paddle.STOPPED)
+                    }
+                }
+
+                override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+            }*/
+
+
             when (motionEvent.action and MotionEvent.ACTION_MASK) {
                 MotionEvent.ACTION_DOWN -> {
+                    if (lost)
+                        lost = false
                     paused = false
+                    if (motionEvent.x > screenX / 2) {
+                        paddle.setMovementState(paddle.RIGHT)
+                    } else {
+                        paddle.setMovementState(paddle.LEFT)
+                    }
                 }
                 MotionEvent.ACTION_UP -> paddle.setMovementState(paddle.STOPPED)
             }
-
             return true
         }
 

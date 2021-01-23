@@ -36,7 +36,6 @@ class  SignInViewModel(val context: Context):ViewModel() {
 //        viewModelScope.launch {
 //            if (isInputDataValid){
 //                _loading.value=true
-//                //check in the network
 //                //if success
 //                isUserSignedIn.value=true
 //                //else show error
@@ -47,6 +46,7 @@ class  SignInViewModel(val context: Context):ViewModel() {
             //check user in network
             isUserSignedIn.value = true
         }
+//                //check in the network
     }
 
     private fun CheckIfUserIsSignedIn() {

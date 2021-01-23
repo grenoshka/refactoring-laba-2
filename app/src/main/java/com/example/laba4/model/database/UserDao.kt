@@ -21,6 +21,14 @@ interface UserDao {
     @Query("SELECT * FROM myUsers")
     fun getAllUsers(): List<User>
 
+    @Query("SELECT EXISTS(SELECT * FROM myUsers WHERE isLoggedIn=1)")
+    fun checkIfUserIsLoggedIn():Boolean
+
+    @Query("SELECT EXISTS(SELECT * FROM myUsers WHERE email =:email and password =:password)")
+    fun checkIfUserExists(email:String, password:String):Boolean
+
+    @Query("UPDATE myUsers set isLoggedIn =1 WHERE email =:email and password =:password")
+    fun signIn(email:String, password:String)
     // Получение всех Object из бд с условием
     //@Query("SELECT * FROM myUsers WHERE id LIKE :condition")
     //fun getAllPeopleWithFavoriteColor(condition: String): List<User>
