@@ -21,7 +21,6 @@ class GameActivity : AppCompatActivity() {
     private lateinit var breakoutView:BreakoutView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_game)
         breakoutView = BreakoutView(this)
         setContentView(breakoutView)
     }
@@ -80,10 +79,42 @@ class GameActivity : AppCompatActivity() {
         var lives = 3
         fun createBricksAndRestart() {
 
+            sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+            sensorEventListener = object : SensorEventListener {
+                override fun onSensorChanged(event: SensorEvent) {
+                    val rotationMatrix = FloatArray(16)
+                    SensorManager.getRotationMatrixFromVector(
+                        rotationMatrix, event.values
+                    )
+                    val remappedRotationMatrix = FloatArray(16)
+                    SensorManager.remapCoordinateSystem(
+                        rotationMatrix,
+                        SensorManager.AXIS_X,
+                        SensorManager.AXIS_Z,
+                        remappedRotationMatrix
+                    )
+
+                    // Convert to orientations
+                    val orientations = FloatArray(3)
+                    SensorManager.getOrientation(remappedRotationMatrix, orientations)
+                    for (i in 0..2) {
+                        orientations[i] = Math.toDegrees(orientations[i].toDouble()).toFloat()
+                    }
+                    when {
+                        orientations[0] > 0 -> paddle.setMovementState(paddle.RIGHT)
+                        orientations[0] < 0 -> paddle.setMovementState(paddle.LEFT)
+                        else -> paddle.setMovementState(paddle.STOPPED)
+                    }
+                }
+
+                override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+            }
+
             // Put the ball back to the start
             ball.reset(screenX, screenY)
-            val brickWidth = screenX / 8
-            val brickHeight = screenY / 20
+            val brickWidth = screenX / 6
+            val brickHeight = screenY / 16
 
             // Build a wall of bricks
             numBricks = 0
@@ -105,6 +136,39 @@ class GameActivity : AppCompatActivity() {
                 // Capture the current time in milliseconds in startFrameTime
                 val startFrameTime = System.currentTimeMillis()
                 // Update the frame
+
+                sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+                sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+                sensorEventListener = object : SensorEventListener {
+                    override fun onSensorChanged(event: SensorEvent) {
+                        val rotationMatrix = FloatArray(16)
+                        SensorManager.getRotationMatrixFromVector(
+                            rotationMatrix, event.values
+                        )
+                        val remappedRotationMatrix = FloatArray(16)
+                        SensorManager.remapCoordinateSystem(
+                            rotationMatrix,
+                            SensorManager.AXIS_X,
+                            SensorManager.AXIS_Z,
+                            remappedRotationMatrix
+                        )
+
+                        // Convert to orientations
+                        val orientations = FloatArray(3)
+                        SensorManager.getOrientation(remappedRotationMatrix, orientations)
+                        for (i in 0..2) {
+                            orientations[i] = Math.toDegrees(orientations[i].toDouble()).toFloat()
+                        }
+                        when {
+                            orientations[0] > 0 -> paddle.setMovementState(paddle.RIGHT)
+                            orientations[0] < 0 -> paddle.setMovementState(paddle.LEFT)
+                            else -> paddle.setMovementState(paddle.STOPPED)
+                        }
+                    }
+
+                    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+                }
+
                 if (!paused) {
                     update()
                 }
@@ -185,7 +249,6 @@ class GameActivity : AppCompatActivity() {
         // Draw the newly updated scene
         @SuppressLint("UseCompatLoadingForDrawables")
         fun draw() {
-
             // Make sure our drawing surface is valid or we crash
             if (ourHolder.surface.isValid) {
                 // Lock the canvas ready to draw
@@ -193,13 +256,14 @@ class GameActivity : AppCompatActivity() {
 
                 // Draw the background color
                 //canvas.drawColor(Color.argb(255, 26, 128, 182))
-                val drawable = resources.getDrawable(R.drawable.game_background,null)
+                val drawable = resources.getDrawable(R.drawable.game_background2,null)
                 drawable.setBounds(left,top,right,bottom)
                 drawable.draw(canvas)
                 // Choose the brush color for drawing
-                paint.color = Color.argb(255, 255, 255, 255)
+                paint.color = Color.argb(255, 148, 0, 211)
+
                 val paintPaddle = Paint()
-                paintPaddle.color=Color.argb(255,174,205,232)
+                paintPaddle.color=Color.argb(255,100,149,237)
 
                 // Draw the paddle
                 canvas.drawRect(paddle.rect, paintPaddle)
@@ -218,7 +282,7 @@ class GameActivity : AppCompatActivity() {
                 }
 
                 // Choose the brush color for drawing
-                paint.color = Color.argb(255, 255, 255, 255)
+                paint.color = Color.argb(255, 240, 230, 140)
 
                 // Draw the score
                 paint.textSize = 40f
@@ -258,62 +322,24 @@ class GameActivity : AppCompatActivity() {
             playing = true
             gameThread = Thread(this)
             gameThread!!.start()
-            /*sensorManager.registerListener(
+            sensorManager.registerListener(
                 sensorEventListener,
                 sensor,
                 SensorManager.SENSOR_DELAY_FASTEST
-            )*/
+            )
         }
 
         // The SurfaceView class implements onTouchListener
         // So we can override this method and detect screen touches.
         override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
 
-            /*sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
-            sensorEventListener = object : SensorEventListener {
-                override fun onSensorChanged(event: SensorEvent) {
-                    val rotationMatrix = FloatArray(16)
-                    SensorManager.getRotationMatrixFromVector(
-                        rotationMatrix, event.values
-                    )
-                    val remappedRotationMatrix = FloatArray(16)
-                    SensorManager.remapCoordinateSystem(
-                        rotationMatrix,
-                        SensorManager.AXIS_X,
-                        SensorManager.AXIS_Z,
-                        remappedRotationMatrix
-                    )
-
-                    // Convert to orientations
-                    val orientations = FloatArray(3)
-                    SensorManager.getOrientation(remappedRotationMatrix, orientations)
-                    for (i in 0..2) {
-                        orientations[i] = Math.toDegrees(orientations[i].toDouble()).toFloat()
-                    }
-                    //tv.setText(orientations[2] as Int.toString())
-                    when {
-                        orientations[2] < 0 -> paddle.setMovementState(paddle.RIGHT)
-                        orientations[2] > 0 -> paddle.setMovementState(paddle.LEFT)
-                        else -> paddle.setMovementState(paddle.STOPPED)
-                    }
-                }
-
-                override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
-            }*/
-
-
             when (motionEvent.action and MotionEvent.ACTION_MASK) {
                 MotionEvent.ACTION_DOWN -> {
                     paused = false
-                    if (motionEvent.x > screenX / 2) {
-                        paddle.setMovementState(paddle.RIGHT)
-                    } else {
-                        paddle.setMovementState(paddle.LEFT)
-                    }
                 }
                 MotionEvent.ACTION_UP -> paddle.setMovementState(paddle.STOPPED)
             }
+
             return true
         }
 
