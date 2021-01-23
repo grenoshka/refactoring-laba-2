@@ -19,6 +19,7 @@
     <string name="level3">Level 3</string>
     <string name="leaders">Leaders</string>
     <string name="position">Pos</string>
+    <string name="profile">Profile</string>
 
     <!--    shared preferences-->
     <string name="preference_file_key">sharedPrefSmartName</string>
