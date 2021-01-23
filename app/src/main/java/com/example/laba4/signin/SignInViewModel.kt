@@ -32,21 +32,18 @@ class  SignInViewModel(val context: Context):ViewModel() {
     }
 
     fun signIn(){
-        //TODO: ADD CHECKING IN WITH SERVER
-//        viewModelScope.launch {
-//            if (isInputDataValid){
-//                _loading.value=true
-//                //if success
-//                isUserSignedIn.value=true
-//                //else show error
-//                _loading.value=false
-//            }
-//        }
-        if (inputDataIsValid()) {
-            //check user in network
-            isUserSignedIn.value = true
+        viewModelScope.launch {
+            _loading.value = true
+            if (inputDataIsValid()) {
+                if (repository.checkIfUserExists(email.value!!, password.value!!)) {
+                    repository.signIn(email.value!!, password.value!!)
+                    isUserSignedIn.value = true
+                }
+                else
+                    _errorMessage.value=context.resources.getString(R.string.error_no_user_found)
+            }
+            _loading.value = false
         }
-//                //check in the network
     }
 
     private fun CheckIfUserIsSignedIn() {

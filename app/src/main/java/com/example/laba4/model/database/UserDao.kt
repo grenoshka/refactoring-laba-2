@@ -18,8 +18,8 @@ interface UserDao {
     fun update(myObject: User)
 
     // Получение всех Object из бд
-    @Query("SELECT * FROM myUsers")
-    fun getAllUsers(): List<User>
+    @Query("SELECT * FROM myUsers ORDER BY points DESC")
+    fun getAllUsersOrderedByPoints(): List<User>
 
     @Query("SELECT EXISTS(SELECT * FROM myUsers WHERE isLoggedIn=1)")
     fun checkIfUserIsLoggedIn():Boolean
@@ -29,6 +29,12 @@ interface UserDao {
 
     @Query("UPDATE myUsers set isLoggedIn =1 WHERE email =:email and password =:password")
     fun signIn(email:String, password:String)
+
+    @Query("SELECT * FROM myUsers WHERE isLoggedIn=1 LIMIT 1")
+    fun getSignedInUser():User
+
+    @Query("SELECT COUNT(*) FROM myUsers WHERE points > (SELECT points from myUsers where email =:email and password =:password) + 1")
+    fun getPlaceOnLeaderboard(email:String, password: String):Int
     // Получение всех Object из бд с условием
     //@Query("SELECT * FROM myUsers WHERE id LIKE :condition")
     //fun getAllPeopleWithFavoriteColor(condition: String): List<User>

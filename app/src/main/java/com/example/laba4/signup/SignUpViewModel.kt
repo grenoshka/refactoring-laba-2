@@ -31,7 +31,7 @@ class SignUpViewModel (val context: Context):ViewModel() {
         viewModelScope.launch {
             _loading.value =true
             if (inputDataIsValid()){
-                repository.signUp(email,password,name,)
+                repository.signUp(email.value!!,password.value!!,name.value!!, 0)
                 _userSignedUp.value = true
             }
             _loading.value=false

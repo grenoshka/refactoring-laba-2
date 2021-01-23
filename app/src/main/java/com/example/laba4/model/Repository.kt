@@ -27,8 +27,8 @@ class Repository (val context:Context) {
         )
     }
 
-    suspend fun signUp(email: String, password: String, name:String, points:Int, placeInRank:Int){
-        withContext(Dispatchers.IO){userDao.insert(User(1,"none",name,email,password,placeInRank, points, true))}
+    suspend fun signUp(email: String, password: String, name:String, points:Int){
+        withContext(Dispatchers.IO){userDao.insert(User(1,"none",name,email,password, points, true))}
     }
 
     suspend fun signIn(email: String, password: String) =
@@ -39,6 +39,15 @@ class Repository (val context:Context) {
 
     suspend fun isUserSignedInInDB():Boolean =
        withContext(Dispatchers.IO) { userDao.checkIfUserIsLoggedIn()}
+
+    suspend fun getSignedInUser():User =
+        withContext(Dispatchers.IO){userDao.getSignedInUser()}
+
+    suspend fun getUserRank(email:String, password: String):Int =
+        withContext(Dispatchers.IO){userDao.getPlaceOnLeaderboard(email, password)}
+
+    suspend fun getLeaders():List<User> =
+        withContext(Dispatchers.IO){userDao.getAllUsersOrderedByPoints()}
     //            val defaultToken = context.resources.getString(R.string.defaultToken)
 //            val storedToken = sharedPref.getString(
 //                context.resources.getString(R.string.tokenKey),

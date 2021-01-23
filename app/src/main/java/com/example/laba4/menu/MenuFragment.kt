@@ -12,8 +12,6 @@ import android.graphics.drawable.AnimationDrawable
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.laba4.databinding.FragmentMenuBinding
-import kotlinx.android.synthetic.main.fragment_menu.*
-import kotlinx.android.synthetic.main.fragment_sign_up.view.*
 import com.captaindroid.tvg.Tvg
 
 class MenuFragment : Fragment(){
@@ -51,9 +49,5 @@ class MenuFragment : Fragment(){
         binding.buttonProfile.setOnClickListener {
             navController.navigate(R.id.profileFragment)
         }
-    }
-
-    fun openMap(){
-        navController.navigate(R.id.leaderboardFragment)
     }
 }
