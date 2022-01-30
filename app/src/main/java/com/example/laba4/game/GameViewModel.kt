@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.laba4.model.Repository
 import kotlinx.coroutines.launch
 
-class GameViewModel(context: Context):ViewModel() {
+class GameViewModel(context: Context):ViewModel(), IGameViewModel {
     val repository = Repository(context)
 
-    fun updatePoints(newPoints:Int){
+    override fun updatePoints(newPoints:Int){
         viewModelScope.launch {
             val user = repository.getSignedInUser()
             if (newPoints>user.points)

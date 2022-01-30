@@ -18,20 +18,18 @@ import com.example.laba4.model.Repository
 import com.example.laba4.model.database.User
 import java.io.IOException
 
-lateinit var gameViewModel:GameViewModel
 class GameActivity : AppCompatActivity() {
     private lateinit var breakoutView:BreakoutView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_game)
-        gameViewModel = GameViewModel(this)
         breakoutView = BreakoutView(this)
         setContentView(breakoutView)
     }
 
     internal class BreakoutView(context: Context) :
         SurfaceView(context),
-        Runnable {
+        Runnable, IBreakoutView {
         // This is our thread
         var gameThread: Thread? = null
 
@@ -54,35 +52,36 @@ class GameActivity : AppCompatActivity() {
 
         // A Canvas and a Paint object
         lateinit var canvas: Canvas
-        var paint: Paint
-
-        // This variable tracks the game frame rate
-        var fps: Long = 0
-
-        // This is used to help calculate the fps
-        private var timeThisFrame: Long = 0
+        override var paint: Paint = Paint()
 
         // The size of the screen in pixels
         var screenX: Int
         var screenY: Int
 
-        // The players paddle
-        var paddle: Paddle
+        // This variable tracks the game frame rate
+        override var fps: Long = 0
 
-        // A ball
-        var ball: Ball
+        // This is used to help calculate the fps
+        override var timeThisFrame: Long = 0
 
         // Up to 200 bricks
-        var bricks = arrayOfNulls<Brick>(200)
-        var numBricks = 0
+        override var bricks = arrayOfNulls<Brick>(56)
+
+        // The players paddle
+        override lateinit var paddle: IPaddle
+
+        // A ball
+        override lateinit var ball: IBall
 
         // The score
-        var score = 0
+        override var score = 0
 
         // Lives
-        var lives = 3
+        override var lives = 3
 
-        fun createBricksAndRestart() {
+        var gameViewModel:IGameViewModel
+
+        override fun createBricksAndRestart() {
 
             sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
             sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
@@ -123,11 +122,11 @@ class GameActivity : AppCompatActivity() {
             val brickHeight = screenY / 20
 
             // Build a wall of bricks
-            numBricks = 0
+            var i = 0
             for (column in 0..7) {
                 for (row in 0..6) {
-                    bricks[numBricks] = Brick(row, column, brickWidth, brickHeight)
-                    numBricks++
+                    bricks[i] = Brick(row, column, brickWidth, brickHeight)
+                    i++
                 }
             }
             // if game over reset scores and lives
@@ -192,14 +191,14 @@ class GameActivity : AppCompatActivity() {
 
         // Everything that needs to be updated goes in here
         // Movement, collision detection etc.
-        fun update() {
+        override fun update() {
 
             // Move the paddle if required
             paddle.update(fps)
             ball.update(fps)
 
             // Check for ball colliding with a brick
-            for (i in 0 until numBricks) {
+            for (i in bricks.indices) {
                 if (bricks[i]!!.visibility) {
                     if (RectF.intersects(bricks[i]!!.rect, ball.rect)) {
                         bricks[i]!!.setInvisible()
@@ -243,12 +242,12 @@ class GameActivity : AppCompatActivity() {
             // If the ball hits right wall bounce
             if (ball.rect.right >= screenX.toFloat()) {
                 ball.reverseXVelocity()
-                //ball.clearObstacleX(screenX - 22.toFloat())
+                ball.clearObstacleX(screenX - 2.toFloat())
             }
 
 
             // Pause if cleared screen
-            if (score == numBricks * 20) {
+            if (score == bricks.size * 20) {
                 paused = true
                 gameViewModel.updatePoints(score)
                 createBricksAndRestart()
@@ -257,7 +256,7 @@ class GameActivity : AppCompatActivity() {
 
         // Draw the newly updated scene
         @SuppressLint("UseCompatLoadingForDrawables")
-        fun draw() {
+        override fun draw() {
 
             // Make sure our drawing surface is valid or we crash
             if (ourHolder.surface.isValid) {
@@ -285,7 +284,7 @@ class GameActivity : AppCompatActivity() {
                 paint.color = Color.argb(255, 189, 183, 107)
 
                 // Draw the bricks if visible
-                for (i in 0 until numBricks) {
+                for (i in 0 until bricks.size) {
                     if (bricks[i]!!.visibility) {
                         canvas.drawRect(bricks[i]!!.rect, paint)
                     }
@@ -299,7 +298,7 @@ class GameActivity : AppCompatActivity() {
                 canvas.drawText("Score: $score   Lives: $lives", 100f, screenY.toFloat()-100f, paint)
 
                 // Has the player cleared the screen?
-                if (score == numBricks * 20) {
+                if (score == bricks.size * 20) {
                     paint.textSize = 90f
                     canvas.drawText("YOU HAVE WON!", 10f, screenY / 2.toFloat(), paint)
                 }
@@ -317,7 +316,7 @@ class GameActivity : AppCompatActivity() {
 
         // If SimpleGameEngine Activity is paused/stopped
         // shutdown our thread.
-        fun pause() {
+        override fun pause() {
             playing = false
             try {
                 gameThread!!.join()
@@ -328,7 +327,7 @@ class GameActivity : AppCompatActivity() {
 
         // If SimpleGameEngine Activity is started then
         // start our thread.
-        fun resume() {
+        override fun resume() {
             playing = true
             gameThread = Thread(this)
             gameThread!!.start()
@@ -401,6 +400,7 @@ class GameActivity : AppCompatActivity() {
             // How kind.
 
             // Initialize ourHolder and paint objects
+            gameViewModel = GameViewModel(context)
             ourHolder = holder
             paint = Paint()
 

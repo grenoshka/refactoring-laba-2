@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.laba4.databinding.FragmentSignUpBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sign_up.view.*
 
 class SignUpFragment : Fragment(){
@@ -27,7 +28,7 @@ class SignUpFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
+        //navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
         _binding = DataBindingUtil.inflate(inflater,R.layout.fragment_sign_up, container,false)
         signUpViewModel = SignUpViewModel(requireContext())
 

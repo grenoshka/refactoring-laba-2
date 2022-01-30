@@ -4,29 +4,44 @@ import android.graphics.RectF
 import java.util.*
 
 
-class Ball(screenX: Int, screenY: Int) {
+interface IBall {
     var rect: RectF
     var xVelocity: Float
     var yVelocity: Float
-    var ballWidth = 50f
-    var ballHeight = 50f
+    var ballWidth: Float
+    var ballHeight: Float
+    fun update(fps: Long)
+    fun reverseYVelocity()
+    fun reverseXVelocity()
+    fun setRandomXVelocity()
+    fun clearObstacleY(y: Float)
+    fun clearObstacleX(x: Float)
+    fun reset(x: Int, y: Int)
+}
 
-    fun update(fps: Long) {
+class Ball(screenX: Int, screenY: Int) : IBall {
+    override lateinit var rect: RectF
+    override var xVelocity: Float = 0.0f
+    override var yVelocity: Float = 0.0f
+    override var ballWidth = 50f
+    override var ballHeight = 50f
+
+    override fun update(fps: Long) {
         rect.left = rect.left + xVelocity / fps
         rect.top = rect.top + yVelocity / fps
         rect.right = rect.left + ballWidth
         rect.bottom = rect.top + ballHeight
     }
 
-    fun reverseYVelocity() {
+    override fun reverseYVelocity() {
         yVelocity = -yVelocity
     }
 
-    fun reverseXVelocity() {
+    override fun reverseXVelocity() {
         xVelocity = -xVelocity
     }
 
-    fun setRandomXVelocity() {
+    override fun setRandomXVelocity() {
         val generator = Random()
         val answer = generator.nextInt(2)
         if (answer == 0) {
@@ -34,17 +49,17 @@ class Ball(screenX: Int, screenY: Int) {
         }
     }
 
-    fun clearObstacleY(y: Float) {
+    override fun clearObstacleY(y: Float) {
         rect.bottom = y
         rect.top = y - ballHeight
     }
 
-    fun clearObstacleX(x: Float) {
+    override fun clearObstacleX(x: Float) {
         rect.left = x
         rect.right = x + ballWidth
     }
 
-    fun reset(x: Int, y: Int) {
+    override fun reset(x: Int, y: Int) {
         rect.left = x / 2.toFloat()-ballWidth/2
         rect.top = y - 50.toFloat()-ballHeight
         rect.right = x / 2 + ballWidth/2

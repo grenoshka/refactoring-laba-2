@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.laba4.R
 import com.example.laba4.databinding.FragmentSignInBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sign_in.view.*
 
 
@@ -30,7 +32,7 @@ class SignInFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        navController = Navigation.findNavController(requireActivity(), R.id.navHostFragment)
+        navController = findNavController()
         _binding = DataBindingUtil.inflate(inflater,R.layout.fragment_sign_in, container,false)
         signInViewModel = SignInViewModel(requireContext())
 
@@ -55,7 +57,7 @@ class SignInFragment : Fragment() {
             }
         })
         signInViewModel.errorMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
         })
         binding.buttonGoToSignUp.setOnClickListener {
             navController.navigate(R.id.signUpActivity)
